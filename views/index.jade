@@ -1,5 +1,25 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    h1= title
+    p Bem vindo a #{title}, está API REST foi desenvolvida com o intuito de demonstrar minhas habilidades em NodeJS.
+    p Para começar a usá-la, basta copiar o projeto para sua máquina, configurar um database no mongo e adicionar a conexão em config.js.
+    p Existem duas entidades básicas na API:
+        ul
+            li User, acessivel através da rota /users
+            li Product, acessivel através da rota /products
+    p Primeiramente será necessário criar um usuário, através de /user (método POST).<br/>Os atributos necessário para criação do mesmo são:
+        ul
+            li name (string)
+            li email (string)
+            li password (string)
+    p Após criado o usuário, poderá ser feito o login através de /users/authenticate. Será necessário enviar email e password dentro do JSON.
+    p Após autenticação as demais rotas estarão acessíveis, sendo estas /users (Métodos GET, PUT e DELETE) e /produtcs
+    p Para criação de Product os atributos necessários são:
+        ul
+            li name (string)
+            li brand (string)
+            li price (number)
+    h2 Obrigado!
+  
+  
