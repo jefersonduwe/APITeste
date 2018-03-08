@@ -10,7 +10,8 @@ var users = require('./routes/users');
 var products = require('./routes/products');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/APITesteDatabase');
+var config = require('./config');
+mongoose.connect(config.mongoConnection);
 
 var tokenManeger = require('./routes/token-manager');
 
@@ -29,14 +30,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(tokenManeger.tokenValidator);
-// Adicionado para ter o usuário na rendereização das páginas
-// Talvez deva ser movido para um local mais apropriado
-app.use(function (req, res, next) {
-    if (req.user) {
-        res.locals.usuario = req.user;
-    }
-    next();
-});
 
 app.use('/', index);
 app.use('/users', users);

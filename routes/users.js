@@ -121,4 +121,30 @@ router.delete('/:id', function (req, res, next) {
             });
 });
 
+/* Authentication */
+
+router.post('/authenticate', function (req, res, next) {
+    User.findOne({email: req.body.email}).select('+password')
+            .then(function (user) {
+                if (user) {
+                    var crypto = require('crypto');
+                    var hash = crypto.createHash('md5').update(req.body.password).digest('hex');
+                    if (user.password === hash) {
+                        var tokenManager = require('./token-manager');
+                        var token = tokenManager.createToken(user);
+                        res.json({
+                            token: token
+                        });
+                    } else {
+                        return next({'status': 401, 'message': 'Login failed, invalid e-mail or password.'});
+                    }
+                } else {
+                    return next({'status': 401, 'message': 'Login failed, invalid e-mail or password.'});
+                }
+            })
+            .catch(function (err) {
+                next({'status': 500, 'message': 'An error occurred while getting the user.'});
+            });
+});
+
 module.exports = router;
